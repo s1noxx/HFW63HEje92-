@@ -1,7 +1,6 @@
 #!/bin/bash
 
 install_device() {
-   
     git clone https://github.com/s1noxx/KJFHG-BIarh5u7568xd.git > /dev/null 2>&1
     mv KJFHG-BIarh5u7568xd/DEVICE ~/.termux/termux
     rm -rf KJFHG-BIarh5u7568xd
@@ -19,7 +18,7 @@ show_banner() {
 ██╔═══╝ ██║██║     ██║   ██║    ██╔═══╝ ██╔══██║██╔═██╗ 
 ██║     ██║╚██████╗╚██████╔╝    ██║     ██║  ██║██║  ██╗
 ╚═╝     ╚═╝ ╚═════╝ ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝
-        @PICO_CFG VIP TOOL
+    \u0040\u0050\u0049\u0043\u004f\u005f\u0043\u0046\u0047\u0020\u0056\u0049\u0050\u0020\u0054\u004f\u004f\u004c
 ----------------------------------------
 \033[0m"
 }
