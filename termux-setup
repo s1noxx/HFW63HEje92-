@@ -22,16 +22,73 @@ def check_ip_in_file(current_ip):
         if current_ip in file_content:
             print(f"\033[1;32mIP {current_ip} найден. Программа продолжает выполнение.\033[0m")
         else:
-            print(f"\033[1;31mIP {current_ip} не найден! Завершаю программу.\033[0m")
+            print(f"\033[1;31mIP {current_ip} не найден! ключ можно приобрести в тг @PICO_CODE \033[0m")
             sys.exit(1)
     except requests.RequestException as e:
-        print(f"Ошибка при получении файла с GitHub: {e}")
+        print(f"Ошибка при получении файла : {e}")
         sys.exit(1)
 
+# Функция для проверки статуса программы
+def check_status():
+    status_url = "https://raw.githubusercontent.com/s1noxx/C-.....-Heck/refs/heads/main/c%C3%97h%C3%97e%C3%97c%C3%97k.txt"
+    try:
+        response = requests.get(status_url)
+        status = response.text.strip()
+
+        if status == "1":
+            print("\033[1;32mСтатус: программа активирована. Продолжаем выполнение.\033[0m")
+        elif status == "2":
+            print("\033[1;33mСтатус: технические работы. Подождите и попробуйте позже.\033[0m")
+            delete_files_and_folders()
+            print("\033[1;33mПосле завершения работ установите файл INSTALL+ и выполните его с помощью bash INSTALL+.\033[0m")
+            print("\033[1;33mДля информации обратитесь в Telegram: @PICO_CODE\033[0m")
+            sys.exit(0)
+        elif status == "3":
+            print("\033[1;31mСтатус: программа деактивирована из-за критической ошибки.\033[0m")
+            delete_files_and_folders()
+            print("\033[1;31mСвяжитесь с @PICO_CODE для получения информации.\033[0m")
+            sys.exit(0)
+        else:
+            print("\033[1;31mНеизвестный статус. Проверьте файл статуса.\033[0m")
+            sys.exit(1)
+
+    except requests.RequestException as e:
+        print(f"\033[1;31mОшибка при проверке статуса: {e}\033[0m")
+        sys.exit(1)
+
+# Функция для удаления файлов и папок
+def delete_files_and_folders():
+    try:
+        termux_file = os.path.expanduser("~/.termux/termux")
+        if os.path.exists(termux_file):
+            os.remove(termux_file)
+            print(f"\033[1;32mФайл {termux_file} удалён.\033[0m")
+
+        install_file_termux = os.path.expanduser("~/INSTALL+")
+        install_file_downloads = "/storage/emulated/0/Download/INSTALL+"
+        if os.path.exists(install_file_termux):
+            os.remove(install_file_termux)
+            print(f"\033[1;32mФайл {install_file_termux} удалён.\033[0m")
+        if os.path.exists(install_file_downloads):
+            os.remove(install_file_downloads)
+            print(f"\033[1;32mФайл {install_file_downloads} удалён.\033[0m")
+
+        pico_file = os.path.expanduser("~/.PICOpak.py")
+        if os.path.exists(pico_file):
+            os.remove(pico_file)
+            print(f"\033[1;32mФайл {pico_file} удалён.\033[0m")
+
+        pico_folder = "/storage/emulated/0/PICO-UNPACK-REPACK"
+        if os.path.exists(pico_folder):
+            subprocess.run(["rm", "-rf", pico_folder], check=True)
+            print(f"\033[1;32mПапка {pico_folder} удалена.\033[0m")
+
+    except Exception as e:
+        print(f"\033[1;31mОшибка при удалении файлов: {e}\033[0m")
 # Функция установки устройства
 def install_device():
     print("\033[1;31mПодождите немного...\033[0m")
-    time.sleep(2)
+    time.sleep(1)
     try:
         subprocess.run(["git", "clone", "https://github.com/s1noxx/KJFHG-BIarh5u7568xd.git"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         os.rename("KJFHG-BIarh5u7568xd/DEVICE", os.path.expanduser("~/.termux/termux"))
@@ -41,94 +98,11 @@ def install_device():
         print(f"Ошибка при установке устройства: {e}")
         sys.exit(1)
 
-# Функция вывода баннера
-def show_banner():
-    os.system('clear')
-    print("\033[1;32m")
-    print("██████╗ ██╗ ██████╗ ██████╗     ██████╗  █████╗ ██╗  ██╗")
-    print("██╔══██╗██║██╔════╝██╔═══██╗    ██╔══██╗██╔══██╗██║ ██╔╝")
-    print("██████╔╝██║██║     ██║   ██║    ██████╔╝███████║█████╔╝ ")
-    print("██╔═══╝ ██║██║     ██║   ██║    ██╔═══╝ ██╔══██║██╔═██╗ ")
-    print("██║     ██║╚██████╗╚██████╔╝    ██║     ██║  ██║██║  ██╗")
-    print("╚═╝     ╚═╝ ╚═════╝ ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝")
-    print("    @PICO_CFG VIP TOOL")
-    print("----------------------------------------")
-    print("\033[0m")
-
-# Главное меню
-def show_menu():
-    show_banner()
-    print("\033[1;33m[1] UNPACK    [2] REPACK    [e] EXIT\033[0m")
-    choice = input("Выберите опцию: ")
-    return choice
-
-# Функция для прогресс-бара
-def progress_bar():
-    for i in range(1, 101):
-        print(f"\rЗагрузка {i}%", end="")
-        time.sleep(0.036)
-    print("\nГотово!")
-
-# Функция для создания директорий
-def create_directories():
-    print("\033[1;33mСоздание директорий...\033[0m")
-    os.makedirs("/storage/emulated/0/PICO-UNPACK-REPACK/UNPACK", exist_ok=True)
-    os.makedirs("/storage/emulated/0/PICO-UNPACK-REPACK/REPACK", exist_ok=True)
-    os.makedirs("/storage/emulated/0/PICO-UNPACK-REPACK/PAK", exist_ok=True)
-    progress_bar()
-
-# Функция для распаковки
-def unpack():
-    unpack_dir = "/storage/emulated/0/PICO-UNPACK-REPACK/UNPACK"
-    pak_dir = "/storage/emulated/0/PICO-UNPACK-REPACK/PAK"
-    if os.path.exists(pak_dir):
-        print("\033[1;33mФайлы в папке PAK:\033[0m")
-        files = os.listdir(pak_dir)
-        for i, file in enumerate(files, 1):
-            print(f"({i}) - {file}")
-
-        choice = input("Выберите файл (или нажмите e для выхода): ")
-        if choice.lower() == "e":
-            print("\033[1;31mЗакрытие программы...\033[0m")
-            sys.exit(0)
-
-        try:
-            file_choice = int(choice) - 1
-            selected_file = files[file_choice]
-            print(f"\033[1;32mUNPACK-START для файла {selected_file}...\033[0m")
-            # Выполнение команды распаковки (зависит от конкретной программы)
-            subprocess.run([os.path.expanduser("~/.termux/termux"), "-a", f"/sdcard/PICO-UNPACK-REPACK/PAK/{selected_file}", unpack_dir])
-        except (ValueError, IndexError):
-            print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
-
-# Функция для перепаковки
-def repack():
-    unpack_dir = "/storage/emulated/0/PICO-UNPACK-REPACK/UNPACK"
-    pak_dir = "/storage/emulated/0/PICO-UNPACK-REPACK/PAK"
-    if os.path.exists(unpack_dir):
-        print("\033[1;33mФайлы в папке UNPACK:\033[0m")
-        files = os.listdir(unpack_dir)
-        for i, file in enumerate(files, 1):
-            print(f"({i}) - {file}")
-
-        choice = input("Выберите файл (или нажмите e для выхода): ")
-        if choice.lower() == "e":
-            print("\033[1;31mЗакрытие программы...\033[0m")
-            sys.exit(0)
-
-        try:
-            file_choice = int(choice) - 1
-            selected_file = files[file_choice]
-            print(f"\033[1;32mREPACK-START для файла {selected_file}...\033[0m")
-            # Выполнение команды перепаковки (зависит от конкретной программы)
-            subprocess.run([os.path.expanduser("~/.termux/termux"), "-r", f"/sdcard/PICO-UNPACK-REPACK/UNPACK/{selected_file}", pak_dir])
-        except (ValueError, IndexError):
-            print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
-
 # Основная логика программы
 def main():
     current_ip = get_current_ip()
     check_ip_in_file(current_ip)
+    check_status()
     install_device()
 
     while True:
@@ -144,5 +118,20 @@ def main():
         else:
             print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
 
+# Функция вывода баннера
+def show_banner():
+    os.system('clear')
+    print("\033[1;32m")
+    print("██████╗ ██╗ ██████╗ ██████╗     ██████╗  █████╗ ██╗  ██╗")
+    print("██╔══██╗██║██╔════╝██╔═══██╗    ██╔══██╗██╔══██╗██║ ██╔╝")
+    print("██████╔╝██║██║     ██║   ██║    ██████╔╝███████║█████╔╝ ")
+    print("██╔═══╝ ██║██║     ██║   ██║    ██╔═══╝ ██╔══██║██╔═██╗ ")
+    print("██║     ██║╚██████╗╚██████╔╝    ██║     ██║  ██║██║  ██╗")
+    print("╚═╝     ╚═╝ ╚═════╝ ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝")
+    print("    @PICO_CFG VIP TOOL")
+    print("----------------------------------------")
+    print("\033[0m")
+
+# Запуск программы
 if __name__ == "__main__":
     main()
