@@ -98,25 +98,12 @@ def install_device():
         print(f"Ошибка при установке устройства: {e}")
         sys.exit(1)
 
-# Основная логика программы
-def main():
-    current_ip = get_current_ip()
-    check_ip_in_file(current_ip)
-    check_status()
-    install_device()
-
-    while True:
-        choice = show_menu()
-
-        if choice == '1':
-            unpack()
-        elif choice == '2':
-            repack()
-        elif choice == 'e':
-            print("\033[1;31mВыход из программы...\033[0m")
-            sys.exit(0)
-        else:
-            print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
+# Функция отображения меню
+def show_menu():
+    show_banner()
+    print("\033[1;33m[1] UNPACK    [2] REPACK    [e] EXIT\033[0m")
+    choice = input("Выберите опцию: ")
+    return choice
 
 # Функция вывода баннера
 def show_banner():
@@ -131,6 +118,26 @@ def show_banner():
     print("    @PICO_CFG VIP TOOL")
     print("----------------------------------------")
     print("\033[0m")
+
+# Основная логика программы
+def main():
+    current_ip = get_current_ip()
+    check_ip_in_file(current_ip)
+    check_status()
+    install_device()
+
+    while True:
+        choice = show_menu()
+
+        if choice == '1':
+            print("\033[1;33mОпция UNPACK пока не реализована.\033[0m")
+        elif choice == '2':
+            print("\033[1;33mОпция REPACK пока не реализована.\033[0m")
+        elif choice == 'e':
+            print("\033[1;31mВыход из программы...\033[0m")
+            sys.exit(0)
+        else:
+            print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
 
 # Запуск программы
 if __name__ == "__main__":
