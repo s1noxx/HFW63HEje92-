@@ -196,29 +196,27 @@ def repack():
         print("\033[1;31mПапка PAK не существует. Перепаковка невозможна.\033[0m")
 # Основная логика программы
 def main():
-    current_ip = get_current_ip()
-    if check_ip_and_date(current_ip):
-        install_device()
-        
-        # Проверка статуса (1, 2, 3)
-        if not check_status():
-            return
+    install_device()
+    
+    # Проверка статуса (1, 2, 3)
+    if not check_status():
+        return
 
-        create_directories()  # Создание необходимых директорий
-        while True:
-            show_banner()
-            print("\033[1;33m[1] UNPACK    [2] REPACK    [e] EXIT\033[0m")
-            choice = input("Выберите опцию: ")
+    create_directories()  # Создание необходимых директорий
+    while True:
+        show_banner()
+        print("\033[1;33m[1] UNPACK    [2] REPACK    [e] EXIT\033[0m")
+        choice = input("Выберите опцию: ")
 
-            if choice == '1':
-                unpack()
-            elif choice == '2':
-                repack()
-            elif choice == 'e':
-                print("\033[1;31mВыход из программы...\033[0m")
-                sys.exit(0)
-            else:
-                print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
+        if choice == '1':
+            unpack()
+        elif choice == '2':
+            repack()
+        elif choice == 'e':
+            print("\033[1;31mВыход из программы...\033[0m")
+            sys.exit(0)
+        else:
+            print("\033[1;31mНеверный выбор. Попробуйте снова.\033[0m")
 
 if __name__ == "__main__":
     main()
